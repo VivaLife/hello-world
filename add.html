@@ -1,0 +1,19 @@
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script>
+  // 画面初期表示
+  $(function() {
+    $('#btn').click(function(e) {
+      // サーバ上のadd関数を呼び出し、成功した場合はonAddSuccess関数にコールバックする
+      google.script.run.withSuccessHandler(onAddSuccess).add(this.parentNode);
+    }); 
+    function onAddSuccess(res) {
+      $('#answer').text(res);
+    }
+  });
+</script>
+<form style='margin: 50px;'>
+  A<input type='text' name='a'/>
+  B<input type='text' name='b'/>
+  <input type='button' id='btn' value='足し算'/>
+  <div id='answer'></div>
+</form>

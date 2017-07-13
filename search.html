@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
+    <style>
+#tab_area {
+    position: fixed;            /* ヘッダーの固定 */
+    top: 0px;                   /* 位置(上0px) */
+    left: 0px;                  /* 位置(右0px) */
+    width: 100%;                /* 横幅100%　*/
+    height: 140px;              /* 縦幅140px */
+}
+ul.menulist {
+   margin: 0px;  /* リスト周囲の余白を削除 */
+   padding: 0px; /* リスト内部の余白を削除 */
+}
+ul.menulist li {
+   list-style-type: none; /* (1)先頭記号を消す */
+   float: left;           /* (2)リスト項目を横方向に並べる */
+   margin: 0px;           /* (3)各項目周囲の余白 */
+   padding: 0px;          /* (4)枠線と内容の距離をゼロに */
+   height: 30px;          /* (5)★タブの高さ */
+   text-decoration: none; /* (1)下線を消す */
+   display: block;        /* (2)ブロックとして表示 */
+   padding: 5px 0px;      /* (3)★内側の余白量 */
+   width: 5em;            /* (4)★タブの横幅 */
+   text-align: center;    /* (5)★ラベル(文字列)を中央寄せ */
+   font-weight: bold;     /* (6)★ラベル(文字列)を太字にする */
+   background-color: #ffffcc;     /* (7)★タブの背景色 */
+   border: blue solid 1px;        /* (8)★タブの枠線 */
+   border-top-left-radius: 12px;  /* (9)★タブの左上の角を丸くする */
+   border-top-right-radius: 12px; /* (10)★タブの右上の角を丸くする */
+}
+ul.menulist li#contents1{ background-color: #ccffcc; color: #008000; border-color: #008000; width: 6em; }
+ul.menulist li#contents2{ background-color: #ffcccc; color: #800000; border-color: #800000; }
+ul.menulist li#contents3{ background-color: #ffffcc; color: #808000; border-color: #808000; }
+ul.menulist li#contents4{ background-color: #ccccff; color: #000080; border-color: #000080; }
+ul.menulist li#contents5{ background-color: #ccffff; color: #008080; border-color: #008080; }
+ul.menulist li#contents1 :hover { background-color: #008000; color: #ccffcc; }
+ul.menulist li#contents2 :hover { background-color: #800000; color: #ffcccc; }
+ul.menulist li#contents3 :hover { background-color: #808000; color: #ffffcc; }
+ul.menulist li#contents4 :hover { background-color: #000080; color: #ccccff; }
+ul.menulist li#contents5 :hover { background-color: #008080; color: #ccffff; }
+form{
+  font: 12px Meiryo;
+}
+table{
+  margin-bottom: 20px;
+  border: 1px #000 solid;
+  border-collapse: collapse;
+  color: #000;
+}
+tr{
+  border: 1px #000 solid;
+}
+tr:hover{
+  text-decoration:underline;
+  font-weight:bold;
+  color:#fff;
+  background-color:#ccc;
+}
+th{
+  color: #fff;
+  background-color: #f90;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+}
+td{
+  padding: 3px;
+}
+input#search{
+  color: #fff;
+  background-color: #f90;
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: 10px;
+}
+select#select_box{
+  color: #000;
+  background-color: #fff;
+}
+</style>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+    <script>
+  // 画面初期表示
+  var r_end = 5;  // 行数
+  var c_end = 4;  // 列数 
+  $(function() {
+    $('#search').click(function(e) {
+      // サーバ上のadd関数を呼び出し、成功した場合はonAddSuccess関数にコールバックする
+      google.script.run.withSuccessHandler(onSuccess).search(this.parentNode);
+    }); 
+    function onSuccess(res) {
+      $('#answer').html(res);
+    }
+    //タブクリック時の処理
+    $('.tab_area ul li').click(function() {
+        //.index()を使いクリックされたタブの順番を変数indexに代入する
+        var index = $('.tab_area ul li').index(this);
+        //指定した全コンテンツを非表示にする
+        $('.content_block').css('display','none');
+        //クリックされたタブと同じ順番のコンテンツのみを表示させる
+        $('.content_block').eq(index).css('display','block');
+    });
+  });
+</script>
+  </head>
+  <body>
+    <div class="tab_area clearfix">
+      <ul class="menulist">
+        <li id="contents1" >ホーム</li>
+        <li id="contents2" >検索</li>
+        <li id="contents3">日記</li>
+        <li id="contents4" >BBS</li>
+        <li id="contents5" >リンク</li>
+      </ul>
+    </div>
+    <div class="content_area">
+      <div id="contents1" class="content_block" style="display:block"></div>
+      <div id="contents2" class="content_block" style="display:none">
+        <form style='margin: 50px;'>
+          <p id='msg'>検索項目を入力してください。</p>
+          <table>
+            <tbody>
+              <tr>
+                <th>事業所：</th>
+                <td>
+                  <select id='select_box' name='office'>
+                    <option value=''>▼選択してください▼</option>
+                    <option value='01.東京'>東京</option>
+                    <option value='02.大阪'>大阪</option>
+                    <option value='03.名古屋'>名古屋</option>
+                    <option value='04.福岡'>福岡</option>
+                    <option value='05.札幌'>札幌</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>契約形態：</th>
+                <td>
+                  <select id='select_box' name='status'>
+                    <option value=''>▼選択してください▼</option>
+                    <option value='01.役員'>役員</option>
+                    <option value='02.正社員'>正社員</option>
+                    <option value='03.契約社員'>契約社員</option>
+                    <option value='04.アルバイト'>アルバイト</option>
+                    <option value='05.業務委託・派遣'>業務委託・派遣</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- end table -->
+          <input type='button' id='search' value='検索'/>
+          <div id='answer'></div>
+        </form>
+      </div>
+      <div id="contents3" class="content_block" style="display:none"></div>
+      <div id="contents4" class="content_block" style="display:none"></div>
+      <div id="contents5" class="content_block" style="display:none"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- Bootstrap -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
+    <style>
+    body{
+      font:メイリオ;
+    }
+    table{
+      margin-bottom: 20px;
+      border: 1px #000 solid;
+      border-collapse: collapse;
+      color: #000;
+    }
+    tr{
+      border: 1px #000 solid;
+    }
+    th{
+      color: #fff;
+      background-color: #f90;
+      padding: 10px;
+    }
+    input{
+      margin: 10px 10px 10px 10px;
+    }
+    select{
+      margin: 10px 10px 10px 10px;
+    }
+    input#submit_button{
+      -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+    </style>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+    <script>// 画面初期表示
+      $(function() {
+        $('#btn').click(function(e) {
+          // サーバ上のadd関数を呼び出し、成功した場合はonAddSuccess関数にコールバックする
+          google.script.run.withSuccessHandler(onAddSuccess).add(this.parentNode);
+        }); 
+        function onAddSuccess(res) {
+          $('#answer').text(res);
+        }
+      });
+      function onClickBtn(){
+        google.script.run.withSuccessHandler(onSuccess)
+          .insertData(document.querySelector('#form'));
+      }
+      function onSuccess(res){
+        var msg = document.querySelector('#msg');
+        msg.textContent = res;
+        google.script.host.close();
+      }
+    </script>
+  </head>
+  <body>
+    <p id='msg'>必要事項を入力してください。</p>
+    <form id='form' onsubmit='javascript:return false;'>
+      <table>  
+        <tbody>
+          <tr>  
+            <th>社員番号</th>  
+            <td>
+              <input id='employeeNumber' type='text' name='employeeNumber'>
+            </td>  
+          </tr>
+          <tr>  
+            <th>Google ID</th>  
+            <td>
+              <input id='googleId' type='text' name='googleId'>@imprexc.com
+            </td>  
+          </tr>
+          <tr>  
+            <th>姓</th>  
+            <td>
+              <input id='familyName' type='text' name='familyName'>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>名</th>  
+            <td>
+              <input id='givenName' type='text' name='givenName'>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>事業所</th>  
+            <td>
+              <select id='office' name='office'>
+                <option value=''>▼選択してください▼</option>
+                <option value='01.東京'>東京</option>
+                <option value='02.大阪'>大阪</option>
+                <option value='03.名古屋'>名古屋</option>
+                <option value='04.福岡'>福岡</option>
+                <option value='05.札幌'>札幌</option>
+              </select>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>部署</th>  
+            <td>
+              <input id='department1' type='checkbox' value="コンサル事業部" name='department' >コンサル事業部
+              <input id='department2' type='checkbox' value="BPO事業部" name='department' >BPO事業部
+              <input id='department3' type='checkbox' value="管理部" name='department' >管理部
+            </td>  
+          </tr>
+          <tr>  
+            <th>上長ID</th>  
+            <td>
+              <input id='supervisorId' type='text' name='supervisorId'>@imprexc.com
+            </td>  
+          </tr>
+          <tr>  
+            <th>有給残日数</th>  
+            <td>
+              <input id='paidVacation' type='text' name='paidVacation'>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>年休残日数</th>  
+            <td>
+              <input id='yearVacation' type='text' name='yearVacation'>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>入社日</th>  
+            <td>
+              <input id='entryDate' type='date' name='entryDate'>  
+            </td>  
+          </tr>
+          <tr>  
+            <th>ステータス</th>  
+            <td>  	
+              <select id='status' name='status'>
+                <option value=''>▼選択してください▼</option>
+                <option value='01.役員'>役員</option>
+                <option value='02.正社員'>正社員</option>
+                <option value='03.契約社員'>契約社員</option>
+                <option value='04.アルバイト'>アルバイト</option>
+                <option value='05.業務委託・派遣'>業務委託・派遣</option>
+              </select>  
+            </td>  
+          </tr>
+        </tbody>  
+      </table><!-- end table -->
+      <input id="submit_button" type="button" value="送信" onclick="onClickBtn();">
+    </form>
+  </body>
+</html>
